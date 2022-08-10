@@ -2,9 +2,9 @@
 
 public class User
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
+    public Guid Id { get; } = Guid.NewGuid();
+    public string FirstName { get; init; } = null!;
+    public string LastName { get; init; } = null!;
+    public string Email { get; init; } = null!;
+    public string Password { get; init; } = null!;
 }
