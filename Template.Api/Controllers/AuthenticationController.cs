@@ -1,5 +1,4 @@
 ﻿using Mapster;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Template.Application.Authentication.Commands.Register;
