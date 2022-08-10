@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ucp5x3G9Zkjp1Fw/Bbx1s4YzUt8SDtBzGqG8eyWitZL3Q7BHFjxnbKFCa/GrY6fcACWnvFhwb92HT55qUb4hww==",
+  "success": true,
+  "projectFilePath": "D:\\Development\\Projects\\Template-2022\\Template.Domain\\Template.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Jardine\\.nuget\\packages\\erroror\\0.2.0\\erroror.0.2.0.nupkg.sha512"
+  ],
+  "logs": []
+}

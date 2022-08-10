@@ -1,0 +1,15 @@
+D:\Development\Projects\Template-2022\Template.Application\bin\Debug\net6.0\Template.Application.deps.json
+D:\Development\Projects\Template-2022\Template.Application\bin\Debug\net6.0\Template.Application.dll
+D:\Development\Projects\Template-2022\Template.Application\bin\Debug\net6.0\Template.Application.pdb
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\Template.Application.csproj.AssemblyReference.cache
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\Template.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\Template.Application.AssemblyInfoInputs.cache
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\Template.Application.AssemblyInfo.cs
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\Template.Application.csproj.CoreCompileInputs.cache
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\Template.Application.dll
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\refint\Template.Application.dll
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\Template.Application.pdb
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\ref\Template.Application.dll
+D:\Development\Projects\Template-2022\Template.Application\bin\Debug\net6.0\Template.Domain.dll
+D:\Development\Projects\Template-2022\Template.Application\bin\Debug\net6.0\Template.Domain.pdb
+D:\Development\Projects\Template-2022\Template.Application\obj\Debug\net6.0\Template.Application.csproj.CopyComplete
