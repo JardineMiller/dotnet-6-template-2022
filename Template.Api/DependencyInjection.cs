@@ -1,9 +1,9 @@
-﻿using FluentValidation;
+﻿using System.Reflection;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Template.Api.Common.Errors;
 using Template.Api.Common.Mapping;
-using Template.Application.Common.Interfaces.Misc;
 
 namespace Template.Api;
 
@@ -17,7 +17,9 @@ public static class DependencyInjection
 
         return services
             .AddFluentValidation()
-            .AddValidatorsFromAssemblyContaining<IAssemblyMarker>()
+            .AddValidatorsFromAssembly(
+                Assembly.GetExecutingAssembly()
+            )
             .AddMappings()
             .AddSingleton<
                 ProblemDetailsFactory,
