@@ -9,10 +9,11 @@ public class RegisterCommandValidation
     public RegisterCommandValidation()
     {
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
-        RuleFor(x => x.FirstName).Length(2, 25);
-        RuleFor(x => x.LastName).Length(2, 30);
+        RuleFor(x => x.FirstName).NotEmpty().Length(2, 25);
+        RuleFor(x => x.LastName).NotEmpty().Length(2, 30);
         RuleFor(x => x.Password)
-            .Length(6, 16)
+            .NotEmpty()
+            .Length(6, 50)
             .Matches(Patterns.Auth.Password);
     }
 }
