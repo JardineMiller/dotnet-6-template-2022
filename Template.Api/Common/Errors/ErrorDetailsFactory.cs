@@ -116,7 +116,6 @@ public class ErrorDetailsFactory : ProblemDetailsFactory
         {
             problemDetails.Extensions["traceId"] = traceId;
         }
-        
 
         if (httpContext?.Items["errors"] is List<Error> errors)
         {
