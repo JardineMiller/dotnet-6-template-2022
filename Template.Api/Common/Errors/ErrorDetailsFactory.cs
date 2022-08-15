@@ -120,13 +120,8 @@ public class ErrorDetailsFactory : ProblemDetailsFactory
         if (httpContext?.Items["errors"] is List<Error> errors)
         {
             problemDetails.Extensions.Add(
-                "errors",
-                errors
-                    .GroupBy(x => x.Code)
-                    .ToDictionary(
-                        g => g.Key,
-                        g => g.Select(x => x.Description).ToList()
-                    )
+                "errorCodes",
+                errors.Select(x => x.Code)
             );
         }
     }

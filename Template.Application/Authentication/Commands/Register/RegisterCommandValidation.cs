@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using Template.Application.Authentication.Commands.Register;
 
-namespace Template.Api.Validation;
+namespace Template.Application.Authentication.Commands.Register;
 
 public class RegisterCommandValidation
     : AbstractValidator<RegisterCommand>
