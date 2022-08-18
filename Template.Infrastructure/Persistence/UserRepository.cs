@@ -16,4 +16,9 @@ public class UserRepository : IUserRepository
     {
         _users.Add(user);
     }
+
+    public void Clear()
+    {
+        _users.Clear();
+    }
 }

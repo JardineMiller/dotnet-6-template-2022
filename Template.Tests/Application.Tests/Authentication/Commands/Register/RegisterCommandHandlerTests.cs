@@ -4,6 +4,7 @@ using Moq;
 using Shouldly;
 using Template.Application.Authentication.Commands.Register;
 using Template.Application.Common.Interfaces.Authentication;
+using Template.Application.Common.Interfaces.Persistence;
 using Template.Domain.Common.Errors;
 using Template.Domain.Entities;
 using Template.Infrastructure.Persistence;
@@ -15,9 +16,12 @@ public class RegisterCommandHandlerTests
 {
     private readonly Mock<IJwtGenerator> _jwtGeneratorMock;
 
+    private readonly IUserRepository _userRepository =
+        new UserRepository();
+
     private const string validFirstName = "Test";
     private const string validLastName = "User";
-    private const string validEmail = "test@email.com";
+    private const string validEmail = "test2@email.com";
     private const string validPassword = "Password123!";
 
     public RegisterCommandHandlerTests()
@@ -26,6 +30,11 @@ public class RegisterCommandHandlerTests
         this._jwtGeneratorMock
             .Setup(j => j.GenerateToken(It.IsAny<User>()))
             .Returns("token");
+    }
+
+    private void Teardown()
+    {
+        this._userRepository.Clear();
     }
 
     [Fact]
@@ -54,7 +63,8 @@ public class RegisterCommandHandlerTests
         result.Value.User.FirstName.ShouldBe(validFirstName);
         result.Value.User.LastName.ShouldBe(validLastName);
         result.Value.User.Email.ShouldBe(validEmail);
-        result.Value.User.Password.ShouldBe(validPassword);
+
+        Teardown();
     }
 
     [Fact]
@@ -77,7 +87,7 @@ public class RegisterCommandHandlerTests
 
         // Act
         var handler = new RegisterCommandHandler(
-            new UserRepository(),
+            this._userRepository,
             this._jwtGeneratorMock.Object
         );
 
@@ -99,5 +109,7 @@ public class RegisterCommandHandlerTests
             .Description.ShouldBe(
                 Errors.User.DuplicateEmail.Description
             );
+
+        Teardown();
     }
 }
