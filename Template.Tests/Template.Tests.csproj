@@ -25,10 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application.Tests" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Template.Api\Template.Api.csproj" />
       <ProjectReference Include="..\Template.Application\Template.Application.csproj" />
     </ItemGroup>

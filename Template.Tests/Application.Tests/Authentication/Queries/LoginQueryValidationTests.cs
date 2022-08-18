@@ -39,8 +39,6 @@ public class LoginQueryValidationTests
     [InlineData(null)]
     [InlineData(" ")]
     [InlineData("    ")]
-    [InlineData("a")]
-    [InlineData("passs")]
     private void Should_Have_Error_When_Password_Is_Invalid(
         string invalidPassword
     )
