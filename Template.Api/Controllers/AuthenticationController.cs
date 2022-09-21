@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Template.Application.Authentication.Commands.Register;
 using Template.Application.Authentication.Queries.Login;
@@ -7,6 +8,7 @@ using Template.Contracts.Authentication;
 
 namespace Template.Api.Controllers;
 
+[AllowAnonymous]
 public class AuthenticationController : ApiController
 {
     private readonly ISender _mediator;
