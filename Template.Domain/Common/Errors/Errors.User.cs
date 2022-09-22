@@ -10,5 +10,10 @@ public static partial class Errors
             code: "User.DuplicateEmail",
             description: "Email is already in use"
         );
+
+        public static Error CreationFailed = Error.Failure(
+            code: "User.CreationFailed",
+            description: "Failed to create user"
+        );
     }
 }

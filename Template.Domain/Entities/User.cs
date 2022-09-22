@@ -1,10 +1,9 @@
-﻿namespace Template.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace Template.Domain.Entities;
+
+public class User : IdentityUser
 {
-    public Guid Id { get; } = Guid.NewGuid();
     public string FirstName { get; init; } = null!;
     public string LastName { get; init; } = null!;
-    public string Email { get; init; } = null!;
-    public string Password { get; init; } = null!;
 }

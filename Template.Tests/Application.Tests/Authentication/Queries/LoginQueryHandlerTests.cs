@@ -44,7 +44,6 @@ public class LoginQueryHandlerTests
                 FirstName = validFirstName,
                 LastName = validLastName,
                 Email = validEmail,
-                Password = validPassword
             }
         );
     }

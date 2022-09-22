@@ -16,7 +16,8 @@ public static class DependencyInjection
         services.AddControllers();
 
         return services
-            .AddFluentValidation()
+            .AddFluentValidationAutoValidation()
+            .AddFluentValidationClientsideAdapters()
             .AddValidatorsFromAssembly(
                 Assembly.GetExecutingAssembly()
             )

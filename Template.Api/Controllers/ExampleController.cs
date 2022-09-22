@@ -5,7 +5,7 @@ namespace Template.Api.Controllers;
 public class ExampleController : ApiController
 {
     [HttpGet]
-    public IActionResult Example()
+    public IActionResult Index()
     {
         return Ok(Array.Empty<string>());
     }

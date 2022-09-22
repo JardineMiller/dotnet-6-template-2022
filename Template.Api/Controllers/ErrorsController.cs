@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Template.Application.Common.Errors;
 
 namespace Template.Api.Controllers;
 
+[AllowAnonymous]
 public class ErrorsController : ApiController
 {
     [Route(nameof(Error))]

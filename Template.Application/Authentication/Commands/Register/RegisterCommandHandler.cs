@@ -1,8 +1,8 @@
 ﻿using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Template.Application.Authentication.Common;
 using Template.Application.Common.Interfaces.Authentication;
-using Template.Application.Common.Interfaces.Persistence;
 using Template.Domain.Common.Errors;
 using Template.Domain.Entities;
 
@@ -11,16 +11,16 @@ namespace Template.Application.Authentication.Commands.Register;
 public class RegisterCommandHandler
     : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
-    private readonly IUserRepository _userRepository;
     private readonly IJwtGenerator _jwtGenerator;
+    private readonly UserManager<User> _userManager;
 
     public RegisterCommandHandler(
-        IUserRepository userRepository,
-        IJwtGenerator jwtGenerator
+        IJwtGenerator jwtGenerator,
+        UserManager<User> userManager
     )
     {
-        this._userRepository = userRepository;
         this._jwtGenerator = jwtGenerator;
+        this._userManager = userManager;
     }
 
     public async Task<ErrorOr<AuthenticationResult>> Handle(
@@ -30,7 +30,8 @@ public class RegisterCommandHandler
     {
         // Check if user already exists
         if (
-            this._userRepository.GetUserByEmail(cmd.Email) is not null
+            await this._userManager.FindByEmailAsync(cmd.Email)
+            is not null
         )
         {
             return Errors.User.DuplicateEmail;
@@ -42,10 +43,18 @@ public class RegisterCommandHandler
             FirstName = cmd.FirstName,
             LastName = cmd.LastName,
             Email = cmd.Email,
-            Password = cmd.Password
+            UserName = cmd.Email,
         };
 
-        this._userRepository.Add(user);
+        var result = await this._userManager.CreateAsync(
+            user,
+            cmd.Password
+        );
+
+        if (!result.Succeeded)
+        {
+            return Errors.User.CreationFailed;
+        }
 
         // Create JWT
         var token = this._jwtGenerator.GenerateToken(user);
