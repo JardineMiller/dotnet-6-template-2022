@@ -30,7 +30,7 @@ public static class DependencyInjection
     )
     {
         services
-            .AddIdentity<User, IdentityRole>(
+            .AddIdentityCore<User>(
                 options =>
                 {
                     options.Password.RequireDigit = true;
