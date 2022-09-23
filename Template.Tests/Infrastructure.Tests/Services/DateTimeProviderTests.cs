@@ -16,8 +16,6 @@ public class DateTimeProviderTests
 
         now.ShouldNotBe(DateTime.MinValue);
         now.ShouldNotBe(DateTime.MaxValue);
-
-        now.Date.ShouldBeEquivalentTo(DateTime.UtcNow.Date);
     }
 
     [Fact]
@@ -27,7 +25,5 @@ public class DateTimeProviderTests
 
         now.ShouldNotBe(DateTimeOffset.MinValue);
         now.ShouldNotBe(DateTimeOffset.MaxValue);
-
-        now.Date.ShouldBeEquivalentTo(DateTimeOffset.Now.Date);
     }
 }

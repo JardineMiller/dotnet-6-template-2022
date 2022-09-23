@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Template.Application.Common.Errors;
 
 namespace Template.Api.Controllers;
 
@@ -17,11 +16,6 @@ public class ErrorsController : ApiController
 
         var (statusCode, message) = exception switch
         {
-            DuplicateEmailException
-              => (
-                  StatusCodes.Status409Conflict,
-                  "Email already exists"
-              ),
             _
               => (
                   StatusCodes.Status500InternalServerError,
