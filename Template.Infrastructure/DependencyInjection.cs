@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Template.Application.Common.Interfaces.Services;
 using Template.Domain.Entities;
 using Template.Infrastructure.Authentication;
+using Template.Infrastructure.Email;
 using Template.Infrastructure.Persistence;
 using Template.Infrastructure.Services;
 
@@ -18,6 +20,7 @@ public static class DependencyInjection
         services
             .AddAuth(configuration)
             .AddDatabase(configuration)
+            .AddEmail(configuration)
             .AddIdentity()
             .AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
@@ -29,7 +32,7 @@ public static class DependencyInjection
     )
     {
         services
-            .AddIdentityCore<User>(
+            .AddIdentity<User, IdentityRole>(
                 options =>
                 {
                     options.Password.RequireDigit = true;
@@ -38,7 +41,12 @@ public static class DependencyInjection
                     options.Password.RequireNonAlphanumeric = true;
                     options.Password.RequireUppercase = true;
                     options.Password.RequiredUniqueChars = 0;
+
+                    options.SignIn.RequireConfirmedEmail = true;
                 }
+            )
+            .AddTokenProvider<DataProtectorTokenProvider<User>>(
+                TokenOptions.DefaultProvider
             )
             .AddEntityFrameworkStores<ApplicationDbContext>();
 

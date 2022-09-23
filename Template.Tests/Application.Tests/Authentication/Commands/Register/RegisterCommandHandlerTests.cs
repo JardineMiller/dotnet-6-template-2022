@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Moq;
 using Shouldly;
 using Template.Application.Authentication.Commands.Register;
-using Template.Application.Common.Interfaces.Authentication;
+using Template.Application.Common.Interfaces.Services;
 using Template.Domain.Common.Errors;
 using Template.Domain.Entities;
 using Xunit;
@@ -13,8 +13,8 @@ namespace Template.Application.Tests.Application.Tests.Authentication.Commands.R
 
 public class RegisterCommandHandlerTests
 {
-    private readonly Mock<IJwtGenerator> _jwtGeneratorMock;
     private readonly Mock<UserManager<User>> _userManagerMock;
+    private readonly Mock<IEmailService> _emailServiceMock;
 
     private const string validFirstName = "Test";
     private const string validLastName = "User";
@@ -23,11 +23,6 @@ public class RegisterCommandHandlerTests
 
     public RegisterCommandHandlerTests()
     {
-        this._jwtGeneratorMock = new Mock<IJwtGenerator>();
-        this._jwtGeneratorMock
-            .Setup(j => j.GenerateToken(It.IsAny<User>()))
-            .Returns("token");
-
         this._userManagerMock = new Mock<UserManager<User>>(
             Mock.Of<IUserStore<User>>(),
             null,
@@ -39,6 +34,8 @@ public class RegisterCommandHandlerTests
             null,
             null
         );
+
+        this._emailServiceMock = new Mock<IEmailService>();
     }
 
     [Fact]
@@ -68,8 +65,8 @@ public class RegisterCommandHandlerTests
 
         // Act
         var handler = new RegisterCommandHandler(
-            this._jwtGeneratorMock.Object,
-            this._userManagerMock.Object
+            this._userManagerMock.Object,
+            this._emailServiceMock.Object
         );
 
         var result = handler
@@ -77,7 +74,7 @@ public class RegisterCommandHandlerTests
             .Result;
 
         // Assert
-        result.Value.Token.ShouldBe("token");
+        result.Value.Token.ShouldBe(null);
         result.Value.User.FirstName.ShouldBe(validFirstName);
         result.Value.User.LastName.ShouldBe(validLastName);
         result.Value.User.Email.ShouldBe(validEmail);
@@ -100,8 +97,8 @@ public class RegisterCommandHandlerTests
 
         // Act
         var handler = new RegisterCommandHandler(
-            this._jwtGeneratorMock.Object,
-            this._userManagerMock.Object
+            this._userManagerMock.Object,
+            this._emailServiceMock.Object
         );
 
         var result = handler
@@ -117,6 +114,53 @@ public class RegisterCommandHandlerTests
             .First()
             .Description.ShouldBe(
                 Errors.User.DuplicateEmail.Description
+            );
+    }
+
+    [Fact]
+    public void Handle_GivenUserCreationFailed_ShouldReturnCreationFailedError()
+    {
+        // Arrange
+        this._userManagerMock
+            .Setup(x => x.FindByEmailAsync(validEmail))!
+            .ReturnsAsync(null as User);
+
+        this._userManagerMock
+            .Setup(
+                x =>
+                    x.CreateAsync(
+                        It.IsAny<User>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .ReturnsAsync(IdentityResult.Failed());
+
+        var command = new RegisterCommand(
+            validFirstName,
+            validLastName,
+            validEmail,
+            validPassword
+        );
+
+        // Act
+        var handler = new RegisterCommandHandler(
+            this._userManagerMock.Object,
+            this._emailServiceMock.Object
+        );
+
+        var result = handler
+            .Handle(command, CancellationToken.None)
+            .Result;
+
+        // Assert
+        result.Errors.Count.ShouldBe(1);
+        result.Errors
+            .First()
+            .Code.ShouldBe(Errors.User.CreationFailed.Code);
+        result.Errors
+            .First()
+            .Description.ShouldBe(
+                Errors.User.CreationFailed.Description
             );
     }
 }

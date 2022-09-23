@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Template.Api.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(AuthenticationSchemes = "Bearer")]
 [Route("api/[controller]")]
 public abstract class ApiController : ControllerBase
 {

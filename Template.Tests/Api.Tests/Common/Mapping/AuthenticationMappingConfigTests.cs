@@ -48,7 +48,28 @@ public class AuthenticationMappingConfigTests
     }
 
     [Fact]
-    public void AuthenticationResult_ShouldMapTo_AuthenticationResponse()
+    public void AuthenticationResult_ShouldMapTo_AuthenticationResponse_WithNullToken()
+    {
+        var user = new User()
+        {
+            FirstName = "FirstName",
+            LastName = "LastName",
+            Email = "Email",
+        };
+
+        var src = new AuthenticationResult(user);
+
+        var result = src.Adapt<AuthenticationResponse>();
+
+        result.FirstName.ShouldBe(user.FirstName);
+        result.LastName.ShouldBe(user.LastName);
+        result.Email.ShouldBe(user.Email);
+
+        result.Token.ShouldBe(null);
+    }
+
+    [Fact]
+    public void AuthenticationResult_ShouldMapTo_AuthenticationResponse_WithoutNullToken()
     {
         var user = new User()
         {

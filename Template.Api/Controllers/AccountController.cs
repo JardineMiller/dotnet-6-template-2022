@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Template.Application.Authentication.Commands.ConfirmEmail;
 using Template.Application.Authentication.Commands.Register;
 using Template.Application.Authentication.Queries.Login;
 using Template.Contracts.Authentication;
@@ -35,6 +36,21 @@ public class AccountController : ApiController
     {
         var qry = request.Adapt<LoginQuery>();
         var authResult = await this._mediator.Send(qry);
+
+        return authResult.Match(
+            result => Ok(result.Adapt<AuthenticationResponse>()),
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpGet(nameof(Confirm))]
+    public async Task<IActionResult> Confirm(
+        string token,
+        string email
+    )
+    {
+        var cmd = new ConfirmEmailCommand(email, token);
+        var authResult = await this._mediator.Send(cmd);
 
         return authResult.Match(
             result => Ok(result.Adapt<AuthenticationResponse>()),
