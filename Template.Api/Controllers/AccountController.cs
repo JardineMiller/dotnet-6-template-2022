@@ -9,11 +9,11 @@ using Template.Contracts.Authentication;
 namespace Template.Api.Controllers;
 
 [AllowAnonymous]
-public class AuthenticationController : ApiController
+public class AccountController : ApiController
 {
     private readonly ISender _mediator;
 
-    public AuthenticationController(ISender mediator)
+    public AccountController(ISender mediator)
     {
         this._mediator = mediator;
     }

@@ -1,12 +1,7 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Template.Application.Common.Interfaces.Authentication;
-using Template.Application.Common.Interfaces.Persistence;
 using Template.Application.Common.Interfaces.Services;
+using Template.Domain.Entities;
 using Template.Infrastructure.Authentication;
 using Template.Infrastructure.Persistence;
 using Template.Infrastructure.Services;
@@ -22,48 +17,30 @@ public static class DependencyInjection
     {
         services
             .AddAuth(configuration)
-            .AddScoped<IUserRepository, UserRepository>()
+            .AddDatabase(configuration)
+            .AddIdentity()
             .AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         return services;
     }
 
-    private static IServiceCollection AddAuth(
-        this IServiceCollection services,
-        IConfiguration configuration
+    private static IServiceCollection AddIdentity(
+        this IServiceCollection services
     )
     {
-        var jwtSettings = new JwtSettings();
-        configuration.Bind(JwtSettings.SectionName, jwtSettings);
-
-        services.AddSingleton(Options.Create(jwtSettings));
-        services.AddSingleton<IJwtGenerator, JwtGenerator>();
-
         services
-            .AddAuthentication(
-                defaultScheme: JwtBearerDefaults.AuthenticationScheme
-            )
-            .AddJwtBearer(
+            .AddIdentityCore<User>(
                 options =>
                 {
-                    options.TokenValidationParameters =
-                        new TokenValidationParameters
-                        {
-                            ValidateIssuer = true,
-                            ValidateAudience = true,
-                            ValidateIssuerSigningKey = true,
-                            ValidateLifetime = true,
-                            ValidIssuer = jwtSettings.Issuer,
-                            ValidAudience = jwtSettings.Audience,
-                            IssuerSigningKey =
-                                new SymmetricSecurityKey(
-                                    Encoding.UTF8.GetBytes(
-                                        jwtSettings.Secret
-                                    )
-                                ),
-                        };
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequiredUniqueChars = 0;
                 }
-            );
+            )
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
         return services;
     }

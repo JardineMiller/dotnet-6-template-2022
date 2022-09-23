@@ -55,7 +55,6 @@ public class AuthenticationMappingConfigTests
             FirstName = "FirstName",
             LastName = "LastName",
             Email = "Email",
-            Password = "Password"
         };
 
         var src = new AuthenticationResult(user, "token");

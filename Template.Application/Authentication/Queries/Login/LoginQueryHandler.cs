@@ -1,8 +1,8 @@
 ﻿using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Template.Application.Authentication.Common;
 using Template.Application.Common.Interfaces.Authentication;
-using Template.Application.Common.Interfaces.Persistence;
 using Template.Domain.Common.Errors;
 using Template.Domain.Entities;
 
@@ -11,16 +11,16 @@ namespace Template.Application.Authentication.Queries.Login;
 public class LoginQueryHandler
     : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {
+    private readonly UserManager<User> _userManager;
     private readonly IJwtGenerator _jwtGenerator;
-    private readonly IUserRepository _userRepository;
 
     public LoginQueryHandler(
-        IUserRepository userRepository,
-        IJwtGenerator jwtGenerator
+        IJwtGenerator jwtGenerator,
+        UserManager<User> userManager
     )
     {
-        this._userRepository = userRepository;
         this._jwtGenerator = jwtGenerator;
+        this._userManager = userManager;
     }
 
     public async Task<ErrorOr<AuthenticationResult>> Handle(
@@ -29,14 +29,19 @@ public class LoginQueryHandler
     )
     {
         if (
-            this._userRepository.GetUserByEmail(qry.Email)
+            await this._userManager.FindByEmailAsync(qry.Email)
             is not User user
         )
         {
             return Errors.Authentication.InvalidCredentials;
         }
 
-        if (user.Password != qry.Password)
+        if (
+            !await this._userManager.CheckPasswordAsync(
+                user,
+                qry.Password
+            )
+        )
         {
             return Errors.Authentication.InvalidCredentials;
         }

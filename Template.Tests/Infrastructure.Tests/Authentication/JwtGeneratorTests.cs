@@ -19,7 +19,6 @@ public class JwtGeneratorTests
         {
             FirstName = "test",
             LastName = "user1",
-            Password = "password123!",
             Email = "test@user1.com"
         };
 
