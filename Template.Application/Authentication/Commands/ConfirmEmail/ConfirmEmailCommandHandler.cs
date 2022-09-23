@@ -1,52 +1,50 @@
-﻿using ErrorOr;
-using MediatR;
+﻿using MediatR;
+using ErrorOr;
 using Microsoft.AspNetCore.Identity;
 using Template.Application.Authentication.Common;
 using Template.Application.Common.Interfaces.Authentication;
 using Template.Domain.Common.Errors;
 using Template.Domain.Entities;
 
-namespace Template.Application.Authentication.Queries.Login;
+namespace Template.Application.Authentication.Commands.ConfirmEmail;
 
-public class LoginQueryHandler
-    : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
+public class ConfirmEmailCommandHandler
+    : IRequestHandler<
+          ConfirmEmailCommand,
+          ErrorOr<AuthenticationResult>
+      >
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtGenerator _jwtGenerator;
 
-    public LoginQueryHandler(
-        IJwtGenerator jwtGenerator,
-        UserManager<User> userManager
+    public ConfirmEmailCommandHandler(
+        UserManager<User> userManager,
+        IJwtGenerator jwtGenerator
     )
     {
-        this._jwtGenerator = jwtGenerator;
         this._userManager = userManager;
+        this._jwtGenerator = jwtGenerator;
     }
 
     public async Task<ErrorOr<AuthenticationResult>> Handle(
-        LoginQuery qry,
+        ConfirmEmailCommand cmd,
         CancellationToken cancellationToken
     )
     {
         if (
-            await this._userManager.FindByEmailAsync(qry.Email)
+            await this._userManager.FindByEmailAsync(cmd.Email)
             is not User user
         )
         {
             return Errors.Authentication.InvalidCredentials;
         }
 
-        if (!user.EmailConfirmed)
-        {
-            return Errors.Authentication.EmailNotConfirmed;
-        }
+        var result = await this._userManager.ConfirmEmailAsync(
+            user,
+            cmd.Token
+        );
 
-        if (  
-            !await this._userManager.CheckPasswordAsync(
-                user,
-                qry.Password
-            )
-        )
+        if (!result.Succeeded)
         {
             return Errors.Authentication.InvalidCredentials;
         }

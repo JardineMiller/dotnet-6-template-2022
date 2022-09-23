@@ -3,6 +3,7 @@ using Template.Application.Authentication.Commands.Register;
 using Template.Application.Authentication.Common;
 using Template.Application.Authentication.Queries.Login;
 using Template.Contracts.Authentication;
+using Template.Domain.Entities;
 
 namespace Template.Api.Common.Mapping;
 
@@ -21,7 +22,14 @@ public class AuthenticationMappingConfig : IRegister
 
         config
             .NewConfig<AuthenticationResult, AuthenticationResponse>()
-            .Map(dest => dest.Token, src => src.Token)
+            .IgnoreIf(
+                (src, dest) => string.IsNullOrEmpty(src.Token),
+                dest => dest.Token
+            )
             .Map(dest => dest, src => src.User);
+
+        config
+            .NewConfig<RegisterCommand, User>()
+            .Map(dest => dest.UserName, src => src.Email);
     }
 }

@@ -85,7 +85,15 @@ public class LoginQueryHandlerTests
         // Arrange
         this._userManagerMock
             .Setup(x => x.FindByEmailAsync(validEmail))!
-            .ReturnsAsync(null as User);
+            .ReturnsAsync(
+                new User()
+                {
+                    FirstName = validFirstName,
+                    LastName = validLastName,
+                    Email = validEmail,
+                    EmailConfirmed = true
+                }
+            );
 
         this._userManagerMock
             .Setup(
@@ -124,7 +132,7 @@ public class LoginQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_GivenValidRequest_ReturnsCorrectResponse()
+    public async Task Handle_GivenUserHasNotConfirmedEmail_ReturnsError()
     {
         // Arrange
         this._userManagerMock
@@ -135,6 +143,58 @@ public class LoginQueryHandlerTests
                     FirstName = validFirstName,
                     LastName = validLastName,
                     Email = validEmail
+                }
+            );
+
+        this._userManagerMock
+            .Setup(
+                x =>
+                    x.CheckPasswordAsync(
+                        It.IsAny<User>(),
+                        invalidPassword
+                    )
+            )!
+            .ReturnsAsync(false);
+
+        var query = new LoginQuery(validEmail, invalidPassword);
+        var handler = new LoginQueryHandler(
+            this._jwtGeneratorMock.Object,
+            this._userManagerMock.Object
+        );
+
+        // Act
+        var result = await handler.Handle(
+            query,
+            CancellationToken.None
+        );
+
+        // Assert
+        result.Errors.Count.ShouldBe(1);
+        result.Errors
+            .First()
+            .Code.ShouldBe(
+                Errors.Authentication.EmailNotConfirmed.Code
+            );
+        result.Errors
+            .First()
+            .Description.ShouldBe(
+                Errors.Authentication.EmailNotConfirmed.Description
+            );
+    }
+
+    [Fact]
+    public async Task Handle_GivenValidRequest_ReturnsCorrectResponse()
+    {
+        // Arrange
+        this._userManagerMock
+            .Setup(x => x.FindByEmailAsync(validEmail))!
+            .ReturnsAsync(
+                new User()
+                {
+                    FirstName = validFirstName,
+                    LastName = validLastName,
+                    Email = validEmail,
+                    EmailConfirmed = true
                 }
             );
 
