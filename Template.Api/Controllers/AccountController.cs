@@ -1,15 +1,11 @@
 ﻿using Mapster;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Template.Application.Authentication.Commands.ConfirmEmail;
-using Template.Application.Authentication.Commands.Register;
-using Template.Application.Authentication.Queries.Login;
-using Template.Contracts.Authentication;
+using Template.Application.Account.Commands;
+using Template.Contracts.Account;
 
 namespace Template.Api.Controllers;
 
-[AllowAnonymous]
 public class AccountController : ApiController
 {
     private readonly ISender _mediator;
@@ -19,41 +15,16 @@ public class AccountController : ApiController
         this._mediator = mediator;
     }
 
-    [HttpPost(nameof(Register))]
-    public async Task<IActionResult> Register(RegisterRequest request)
-    {
-        var cmd = request.Adapt<RegisterCommand>();
-        var authResult = await this._mediator.Send(cmd);
-
-        return authResult.Match(
-            result => Ok(result.Adapt<AuthenticationResponse>()),
-            errors => Problem(errors)
-        );
-    }
-
-    [HttpPost(nameof(Login))]
-    public async Task<IActionResult> Login(LoginRequest request)
-    {
-        var qry = request.Adapt<LoginQuery>();
-        var authResult = await this._mediator.Send(qry);
-
-        return authResult.Match(
-            result => Ok(result.Adapt<AuthenticationResponse>()),
-            errors => Problem(errors)
-        );
-    }
-
-    [HttpGet(nameof(Confirm))]
-    public async Task<IActionResult> Confirm(
-        string token,
-        string email
+    [HttpPost(nameof(ResetPassword))]
+    public async Task<IActionResult> ResetPassword(
+        ResetPasswordRequest request
     )
     {
-        var cmd = new ConfirmEmailCommand(email, token);
-        var authResult = await this._mediator.Send(cmd);
+        var cmd = request.Adapt<ResetPasswordCommand>();
+        var result = await this._mediator.Send(cmd);
 
-        return authResult.Match(
-            result => Ok(result.Adapt<AuthenticationResponse>()),
+        return result.Match(
+            success => Ok(success.Adapt<ResetPasswordResponse>()),
             errors => Problem(errors)
         );
     }
