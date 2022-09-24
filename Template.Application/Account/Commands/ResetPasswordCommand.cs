@@ -9,7 +9,4 @@ public record ResetPasswordCommand(
     string NewPassword,
     string? Token = null,
     string? OldPassword = null
-) : IRequest<ErrorOr<ResetPasswordResult>>
-{
-    // public bool IsTokenReset => Token is not null;
-}
+) : IRequest<ErrorOr<ResetPasswordResult>>;
