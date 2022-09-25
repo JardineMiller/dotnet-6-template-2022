@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Template.Application.Common.Patterns;
 
-namespace Template.Application.Account.Commands;
+namespace Template.Application.Account.Commands.ResetPassword;
 
 public class ResetPasswordCommandValidation
     : AbstractValidator<ResetPasswordCommand>

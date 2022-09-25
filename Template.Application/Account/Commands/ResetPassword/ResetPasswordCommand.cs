@@ -1,8 +1,8 @@
-﻿using MediatR;
-using ErrorOr;
+﻿using ErrorOr;
+using MediatR;
 using Template.Application.Account.Common;
 
-namespace Template.Application.Account.Commands;
+namespace Template.Application.Account.Commands.ResetPassword;
 
 public record ResetPasswordCommand(
     string Email,

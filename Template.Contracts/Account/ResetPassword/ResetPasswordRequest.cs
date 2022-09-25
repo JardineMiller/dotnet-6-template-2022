@@ -1,4 +1,4 @@
-﻿namespace Template.Contracts.Account;
+﻿namespace Template.Contracts.Account.ResetPassword;
 
 public record ResetPasswordRequest(
     string Email,

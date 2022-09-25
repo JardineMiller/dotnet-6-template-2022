@@ -43,4 +43,31 @@ public class EmailService : IEmailService
             mailText
         );
     }
+
+    public void SendPasswordResetEmail(string toEmail, string token)
+    {
+        var filePath = Directory.GetCurrentDirectory();
+        var parent = Directory.GetParent(filePath);
+
+        var streamReader = new StreamReader(
+            $"{parent}/Template.Infrastructure/Email/Templates/ResetPassword.html"
+        );
+        var mailText = streamReader.ReadToEnd();
+        streamReader.Close();
+
+        var encodedToken = HttpUtility.UrlEncode(token);
+
+        mailText = mailText
+            .Replace("[email]", toEmail)
+            .Replace(
+                "[reset-link]",
+                $"https://localhost:7097/api/account/resetpassword?token={encodedToken}&email={toEmail}"
+            );
+
+        this._emailSender.SendEmail(
+            toEmail,
+            $"File Share - Reset Password",
+            mailText
+        );
+    }
 }

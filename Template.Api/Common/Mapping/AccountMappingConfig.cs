@@ -1,7 +1,9 @@
 ﻿using Mapster;
-using Template.Application.Account.Commands;
+using Template.Application.Account.Commands.RequestResetPassword;
+using Template.Application.Account.Commands.ResetPassword;
 using Template.Application.Account.Common;
-using Template.Contracts.Account;
+using Template.Contracts.Account.RequestResetPassword;
+using Template.Contracts.Account.ResetPassword;
 
 namespace Template.Api.Common.Mapping;
 
@@ -28,6 +30,16 @@ public class AccountMappingConfig
         config.NewConfig<
             ResetPasswordResult,
             ResetPasswordResponse
+        >();
+
+        config.NewConfig<
+            RequestResetPasswordRequest,
+            RequestResetPasswordCommand
+        >();
+
+        config.NewConfig<
+            RequestResetPasswordResult,
+            RequestResetPasswordResponse
         >();
     }
 }

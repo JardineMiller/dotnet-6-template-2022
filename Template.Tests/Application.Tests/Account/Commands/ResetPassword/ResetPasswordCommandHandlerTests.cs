@@ -3,13 +3,13 @@ using System.Threading;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using Shouldly;
-using Template.Application.Account.Commands;
+using Template.Application.Account.Commands.ResetPassword;
 using Template.Application.Account.Common;
 using Template.Domain.Common.Errors;
 using Template.Domain.Entities;
 using Xunit;
 
-namespace Template.Application.Tests.Application.Tests.Account.Commands;
+namespace Template.Application.Tests.Application.Tests.Account.Commands.ResetPassword;
 
 public class ResetPasswordCommandHandlerTests
 {
@@ -83,12 +83,13 @@ public class ResetPasswordCommandHandlerTests
             .Setup(x => x.FindByEmailAsync(validEmail))!
             .ReturnsAsync(null as User);
 
-        var command = new ResetPasswordCommand(
-            validEmail,
-            validNewPassword,
-            null,
-            validOldPassword
-        );
+        var command =
+            new ResetPasswordCommand(
+                validEmail,
+                validNewPassword,
+                null,
+                validOldPassword
+            );
 
         // Act
         var handler = new ResetPasswordCommandHandler(
@@ -133,12 +134,13 @@ public class ResetPasswordCommandHandlerTests
             )
             .ReturnsAsync(IdentityResult.Failed());
 
-        var command = new ResetPasswordCommand(
-            validEmail,
-            validNewPassword,
-            null,
-            validOldPassword
-        );
+        var command =
+            new ResetPasswordCommand(
+                validEmail,
+                validNewPassword,
+                null,
+                validOldPassword
+            );
 
         // Act
         var handler = new ResetPasswordCommandHandler(
@@ -183,11 +185,12 @@ public class ResetPasswordCommandHandlerTests
             )
             .ReturnsAsync(IdentityResult.Success);
 
-        var command = new ResetPasswordCommand(
-            validEmail,
-            validNewPassword,
-            validToken
-        );
+        var command =
+            new ResetPasswordCommand(
+                validEmail,
+                validNewPassword,
+                validToken
+            );
 
         // Act
         var handler = new ResetPasswordCommandHandler(
@@ -211,11 +214,12 @@ public class ResetPasswordCommandHandlerTests
             .Setup(x => x.FindByEmailAsync(validEmail))!
             .ReturnsAsync(null as User);
 
-        var command = new ResetPasswordCommand(
-            validEmail,
-            validNewPassword,
-            validToken
-        );
+        var command =
+            new ResetPasswordCommand(
+                validEmail,
+                validNewPassword,
+                validToken
+            );
 
         // Act
         var handler = new ResetPasswordCommandHandler(
@@ -260,11 +264,12 @@ public class ResetPasswordCommandHandlerTests
             )
             .ReturnsAsync(IdentityResult.Failed());
 
-        var command = new ResetPasswordCommand(
-            validEmail,
-            validNewPassword,
-            validToken
-        );
+        var command =
+            new ResetPasswordCommand(
+                validEmail,
+                validNewPassword,
+                validToken
+            );
 
         // Act
         var handler = new ResetPasswordCommandHandler(
