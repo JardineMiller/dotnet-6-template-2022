@@ -1,9 +1,11 @@
 ﻿using Mapster;
 using Shouldly;
 using Template.Api.Common.Mapping;
-using Template.Application.Account.Commands;
+using Template.Application.Account.Commands.RequestResetPassword;
+using Template.Application.Account.Commands.ResetPassword;
 using Template.Application.Account.Common;
-using Template.Contracts.Account;
+using Template.Contracts.Account.RequestResetPassword;
+using Template.Contracts.Account.ResetPassword;
 using Xunit;
 
 namespace Template.Application.Tests.Api.Tests.Common.Mapping;
@@ -63,5 +65,24 @@ public class AccountMappingConfigTests
         var result = src.Adapt<ResetPasswordResponse>();
 
         result.ShouldBeOfType<ResetPasswordResponse>();
+    }
+
+    [Fact]
+    public void RequestResetPasswordRequest_ShouldMapTo_RequestResetPasswordCommand()
+    {
+        var src = new RequestResetPasswordRequest(validEmail);
+        var result = src.Adapt<RequestResetPasswordCommand>();
+
+        result.Email.ShouldBe(validEmail);
+    }
+
+    [Fact]
+    public void RequestResetPasswordResult_ShouldMapTo_RequestResetPasswordResponse()
+    {
+        var src = new RequestResetPasswordResult(validToken);
+        var result = src.Adapt<RequestResetPasswordResponse>();
+
+        result.ShouldBeOfType<RequestResetPasswordResponse>();
+        result.Token.ShouldBe(validToken);
     }
 }

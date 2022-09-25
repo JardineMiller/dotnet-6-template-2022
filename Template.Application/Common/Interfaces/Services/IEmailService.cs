@@ -7,4 +7,6 @@ public interface IEmailService
         string firstName,
         string token
     );
+
+    void SendPasswordResetEmail(string toEmail, string token);
 }

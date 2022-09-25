@@ -1,7 +1,6 @@
 ﻿using Moq;
 using Template.Application.Common.Interfaces.Services;
 using Template.Infrastructure.Services;
-using Xunit;
 
 namespace Template.Application.Tests.Infrastructure.Tests.Services;
 

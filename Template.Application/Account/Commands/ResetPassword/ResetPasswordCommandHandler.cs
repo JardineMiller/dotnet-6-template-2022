@@ -1,11 +1,11 @@
-﻿using MediatR;
-using ErrorOr;
+﻿using ErrorOr;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Template.Application.Account.Common;
 using Template.Domain.Common.Errors;
 using Template.Domain.Entities;
 
-namespace Template.Application.Account.Commands;
+namespace Template.Application.Account.Commands.ResetPassword;
 
 public class ResetPasswordCommandHandler
     : IRequestHandler<
