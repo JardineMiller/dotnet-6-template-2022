@@ -2,7 +2,7 @@
 
 namespace Template.Domain.Entities.Base;
 
-public class DeletableEntity : AuditableEntity, IDeletable
+public abstract class DeletableEntity : AuditableEntity, IDeletable
 {
     public DateTimeOffset? DeletedOn { get; set; }
     public bool IsDeleted { get; set; }
