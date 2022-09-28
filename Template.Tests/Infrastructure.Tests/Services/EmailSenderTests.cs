@@ -9,7 +9,7 @@ namespace Template.Application.Tests.Infrastructure.Tests.Services;
 
 public class EmailSenderTests
 {
-    private EmailSender _emailSender;
+    private EmailSender _emailSender = null!;
 
     private readonly Mock<
         IOptions<EmailSettings>

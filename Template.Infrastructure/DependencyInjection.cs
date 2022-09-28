@@ -27,6 +27,7 @@ public static class DependencyInjection
         return services;
     }
 
+    // ReSharper disable once UnusedMethodReturnValue.Local
     private static IServiceCollection AddIdentity(
         this IServiceCollection services
     )

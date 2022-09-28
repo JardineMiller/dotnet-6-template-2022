@@ -20,11 +20,11 @@ public class AccountMappingConfig
             .NewConfig<ResetPasswordRequest, ResetPasswordCommand>()
             .IgnoreIf(
                 (src, dest) => string.IsNullOrEmpty(src.Token),
-                dest => dest.Token
+                dest => dest.Token!
             )
             .IgnoreIf(
                 (src, dest) => string.IsNullOrEmpty(src.OldPassword),
-                dest => dest.OldPassword
+                dest => dest.OldPassword!
             );
 
         config.NewConfig<

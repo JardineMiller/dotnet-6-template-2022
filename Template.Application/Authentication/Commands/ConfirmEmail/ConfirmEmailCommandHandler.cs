@@ -31,10 +31,11 @@ public class ConfirmEmailCommandHandler
         CancellationToken cancellationToken
     )
     {
-        if (
-            await this._userManager.FindByEmailAsync(cmd.Email)
-            is not User user
-        )
+        var user = await this._userManager.FindByEmailAsync(
+            cmd.Email
+        );
+
+        if (user == null)
         {
             return Errors.Authentication.InvalidCredentials;
         }

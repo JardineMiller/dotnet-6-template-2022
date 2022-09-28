@@ -19,7 +19,7 @@ public class CurrentUserService : ICurrentUserService
         this._user.Identity?.IsAuthenticated ?? false;
 
     public string? UserName =>
-        this.IsAuthenticated ? this._user?.Identity?.Name : null;
+        this.IsAuthenticated ? this._user.Identity?.Name : null;
 
     public string? UserId =>
         this.IsAuthenticated

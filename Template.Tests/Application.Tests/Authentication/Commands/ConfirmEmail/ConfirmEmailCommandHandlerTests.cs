@@ -13,12 +13,12 @@ namespace Template.Application.Tests.Application.Tests.Authentication.Commands.C
 
 public class ConfirmEmailCommandHandlerTests
 {
-    private Mock<UserManager<User>> _userManagerMock;
+    private readonly Mock<UserManager<User>> _userManagerMock;
     private readonly Mock<IJwtGenerator> _jwtGeneratorMock = new();
 
     private const string validEmail = "test2@email.com";
     private const string validToken = "tokens-are-awesome";
-    private User validUser =
+    private readonly User _validUser =
         new()
         {
             FirstName = "Test",
@@ -80,7 +80,7 @@ public class ConfirmEmailCommandHandlerTests
         // Arrange
         this._userManagerMock
             .Setup(x => x.FindByEmailAsync(validEmail))!
-            .ReturnsAsync(this.validUser);
+            .ReturnsAsync(this._validUser);
 
         this._userManagerMock
             .Setup(
@@ -123,7 +123,7 @@ public class ConfirmEmailCommandHandlerTests
         // Arrange
         this._userManagerMock
             .Setup(x => x.FindByEmailAsync(validEmail))!
-            .ReturnsAsync(this.validUser);
+            .ReturnsAsync(this._validUser);
 
         this._userManagerMock
             .Setup(
@@ -153,9 +153,9 @@ public class ConfirmEmailCommandHandlerTests
         // Assert
         result.Value.Token.ShouldBe("token");
         result.Value.User.FirstName.ShouldBe(
-            this.validUser.FirstName
+            this._validUser.FirstName
         );
-        result.Value.User.LastName.ShouldBe(this.validUser.LastName);
-        result.Value.User.Email.ShouldBe(this.validUser.Email);
+        result.Value.User.LastName.ShouldBe(this._validUser.LastName);
+        result.Value.User.Email.ShouldBe(this._validUser.Email);
     }
 }

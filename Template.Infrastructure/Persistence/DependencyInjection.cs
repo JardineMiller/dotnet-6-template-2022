@@ -24,7 +24,7 @@ public static class DependencyInjection
                 options =>
                 {
                     options.UseSqlServer(
-                        connectionString: databaseSettings.ConnectionString
+                        connectionString: databaseSettings.ConnectionString!
                     );
                 }
             )
@@ -33,6 +33,7 @@ public static class DependencyInjection
         return services;
     }
 
+    // ReSharper disable once UnusedMethodReturnValue.Local
     private static IServiceCollection ApplyMigrations(
         this IServiceCollection services
     )
@@ -41,7 +42,7 @@ public static class DependencyInjection
             .BuildServiceProvider()
             .GetRequiredService<ApplicationDbContext>();
 
-        dbContext?.Database.Migrate();
+        dbContext.Database.Migrate();
 
         return services;
     }

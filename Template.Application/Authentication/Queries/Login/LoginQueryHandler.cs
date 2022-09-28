@@ -28,10 +28,11 @@ public class LoginQueryHandler
         CancellationToken cancellationToken
     )
     {
-        if (
-            await this._userManager.FindByEmailAsync(qry.Email)
-            is not User user
-        )
+        var user = await this._userManager.FindByEmailAsync(
+            qry.Email
+        );
+
+        if (user == null)
         {
             return Errors.Authentication.InvalidCredentials;
         }
@@ -41,7 +42,7 @@ public class LoginQueryHandler
             return Errors.Authentication.EmailNotConfirmed;
         }
 
-        if (  
+        if (
             !await this._userManager.CheckPasswordAsync(
                 user,
                 qry.Password

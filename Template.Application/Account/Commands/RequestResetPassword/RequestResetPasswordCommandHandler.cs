@@ -32,10 +32,11 @@ public class RequestResetPasswordCommandHandler
         CancellationToken cancellationToken
     )
     {
-        if (
-            await this._userManager.FindByEmailAsync(request.Email)
-            is not User user
-        )
+        var user = await this._userManager.FindByEmailAsync(
+            request.Email
+        );
+
+        if (user == null)
         {
             return Errors.Authentication.InvalidCredentials;
         }
