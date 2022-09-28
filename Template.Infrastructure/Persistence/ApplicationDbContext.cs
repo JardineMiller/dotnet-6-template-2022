@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Template.Domain.Entities;
-using Template.Domain.Interfaces;
+using Template.Domain.Entities.Interfaces;
 
 namespace Template.Infrastructure.Persistence;
 

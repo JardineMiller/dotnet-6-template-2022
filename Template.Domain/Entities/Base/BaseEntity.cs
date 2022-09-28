@@ -1,4 +1,4 @@
-﻿using Template.Domain.Interfaces;
+﻿using Template.Domain.Entities.Interfaces;
 
 namespace Template.Domain.Entities.Base;
 
