@@ -1,15 +1,21 @@
 ﻿using System.Web;
 using Template.Application.Common.Interfaces.Services;
+using Template.Infrastructure.Email;
 
 namespace Template.Infrastructure.Services;
 
 public class EmailService : IEmailService
 {
     private readonly IEmailSender _emailSender;
+    private readonly IEmailPathService _emailPathService;
 
-    public EmailService(IEmailSender emailSender)
+    public EmailService(
+        IEmailSender emailSender,
+        IEmailPathService emailPathService
+    )
     {
         this._emailSender = emailSender;
+        this._emailPathService = emailPathService;
     }
 
     public void SendConfirmationEmail(
@@ -18,15 +24,7 @@ public class EmailService : IEmailService
         string token
     )
     {
-        var filePath = Directory.GetCurrentDirectory();
-        var parent = Directory.GetParent(filePath);
-
-        var streamReader = new StreamReader(
-            $"{parent}/Template.Infrastructure/Email/Templates/EmailConfirmation.html"
-        );
-        var mailText = streamReader.ReadToEnd();
-        streamReader.Close();
-
+        var mailText = GetEmailContent("EmailConfirmation.html");
         var encodedToken = HttpUtility.UrlEncode(token);
 
         mailText = mailText
@@ -46,15 +44,7 @@ public class EmailService : IEmailService
 
     public void SendPasswordResetEmail(string toEmail, string token)
     {
-        var filePath = Directory.GetCurrentDirectory();
-        var parent = Directory.GetParent(filePath);
-
-        var streamReader = new StreamReader(
-            $"{parent}/Template.Infrastructure/Email/Templates/ResetPassword.html"
-        );
-        var mailText = streamReader.ReadToEnd();
-        streamReader.Close();
-
+        var mailText = GetEmailContent("ResetPassword.html");
         var encodedToken = HttpUtility.UrlEncode(token);
 
         mailText = mailText
@@ -69,5 +59,17 @@ public class EmailService : IEmailService
             $"File Share - Reset Password",
             mailText
         );
+    }
+
+    private string GetEmailContent(string emailFileName)
+    {
+        var streamReader = new StreamReader(
+            this._emailPathService.GetEmailPath(emailFileName)
+        );
+
+        var mailText = streamReader.ReadToEnd();
+        streamReader.Close();
+
+        return mailText;
     }
 }
