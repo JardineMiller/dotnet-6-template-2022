@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Template.Application.Common.Interfaces.Services;
 using Template.Domain.Entities;
 using Template.Domain.Entities.Interfaces;
 
@@ -7,9 +8,15 @@ namespace Template.Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {
+    private readonly IDateTimeProvider _dateTimeProvider;
+
     public ApplicationDbContext(
-        DbContextOptions<ApplicationDbContext> options
-    ) : base(options) { }
+        DbContextOptions<ApplicationDbContext> options,
+        IDateTimeProvider dateTimeProvider
+    ) : base(options)
+    {
+        this._dateTimeProvider = dateTimeProvider;
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,16 +50,20 @@ public class ApplicationDbContext : IdentityDbContext<User>
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.CreatedOn = DateTimeOffset.Now;
+                    entry.Entity.CreatedOn =
+                        this._dateTimeProvider.Now;
                     break;
+
                 case EntityState.Modified:
-                    entry.Entity.ModifiedOn = DateTimeOffset.Now;
+                    entry.Entity.ModifiedOn =
+                        this._dateTimeProvider.Now;
                     break;
+
                 case EntityState.Deleted:
                     if (entry.Entity is IDeletable deletableEntity)
                     {
                         deletableEntity.DeletedOn =
-                            DateTimeOffset.Now;
+                            this._dateTimeProvider.Now;
                         deletableEntity.IsDeleted = true;
                         entry.State = EntityState.Modified;
                     }

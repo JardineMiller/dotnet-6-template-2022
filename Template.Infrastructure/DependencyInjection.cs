@@ -18,11 +18,11 @@ public static class DependencyInjection
     )
     {
         services
+            .AddSingleton<IDateTimeProvider, DateTimeProvider>()
             .AddAuth(configuration)
             .AddDatabase(configuration)
             .AddEmail(configuration)
-            .AddIdentity()
-            .AddSingleton<IDateTimeProvider, DateTimeProvider>();
+            .AddIdentity();
 
         return services;
     }

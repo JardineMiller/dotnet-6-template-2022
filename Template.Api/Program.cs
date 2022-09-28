@@ -5,9 +5,9 @@ using Template.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddPresentation()
+    .AddInfrastructure(builder.Configuration)
     .AddApplication()
-    .AddInfrastructure(builder.Configuration);
+    .AddPresentation();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // builder.Services.AddEndpointsApiExplorer();
