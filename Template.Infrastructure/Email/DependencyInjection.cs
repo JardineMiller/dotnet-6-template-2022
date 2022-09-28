@@ -17,6 +17,7 @@ public static class DependencyInjection
         configuration.Bind(EmailSettings.SectionName, emailSettings);
         services.AddSingleton(Options.Create(emailSettings));
 
+        services.AddTransient<IEmailPathService, EmailPathService>();
         services.AddTransient<IEmailSender, EmailSender>();
         services.AddTransient<IEmailService, EmailService>();
 
