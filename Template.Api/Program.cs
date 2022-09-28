@@ -15,7 +15,7 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseExceptionHandler("/errors");
+app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

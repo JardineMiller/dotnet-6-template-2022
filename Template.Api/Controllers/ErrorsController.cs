@@ -7,7 +7,7 @@ namespace Template.Api.Controllers;
 [AllowAnonymous]
 public class ErrorsController : ApiController
 {
-    [Route(nameof(Error))]
+    [Route("/error")]
     public IActionResult Error()
     {
         Exception? exception = this.HttpContext.Features
