@@ -56,7 +56,7 @@ public class EmailService : IEmailService
 
         this._emailSender.SendEmail(
             toEmail,
-            $"File Share - Reset Password",
+            "File Share - Reset Password",
             mailText
         );
     }
