@@ -7,14 +7,14 @@ using Xunit;
 
 namespace Template.Application.Tests.Infrastructure.Tests.Services;
 
-public class EmailSeviceTests
+public class EmailServiceTests
 {
     private readonly IEmailService _emailService;
     private readonly Mock<IEmailSender> _emailSenderMock = new();
     private readonly Mock<IEmailPathService> _emailPathServiceMock =
         new();
 
-    public EmailSeviceTests()
+    public EmailServiceTests()
     {
         this._emailService = new EmailService(
             this._emailSenderMock.Object,
